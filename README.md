@@ -1,9 +1,7 @@
-----------------------------------------------------------------------------
 JBeam 4 - Plane Frame and Truss Calculation for the Java Platform
 =================================================================
 
-   Copyright (C) 1998, 1999               Kai Gerd Schwebke
-   Copyright (C) 2000, 2001, 2002, 2012   Schwebke Software Development
+   Copyright (C) 1998 Kai Gerd Schwebke
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
