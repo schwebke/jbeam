@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>JBeam Kapitel 7</title>
+<meta charset="utf-8"/>
+</head>
+
+<body>
+<center>
+<h2>JBeam</h2>
+<h3>Ein Stabwerksprogramm für die <em>Java</em>-Plattform</h3>
+<table width=100%><tr><td align=center><a href="kap6.html">zurück</a></td><td align=center><a href="jbeam.html">Inhalt</a></td></tr></table>
+</center>
+<hr>
+<h2>Kapitel 7</h2>
+
+<h3>Modale Analyse</h3>
+<h4>Überblick</h4>
+<p>Neben einer statischen Berechnung der Schnittgrössen und
+Verschiebungen kann mit JBeam auch eine modale Analyse des Systems
+durchgeführt werden. Als Ergebnissgrössen erhält man die Frequenzen
+und Verschiebungsfiguren der Eigenformen des Systems.</p>
+
+<p>Hierzu wird die konzentrierte Massenmethode eingesetzt. Daher
+sind die ermittelten Verschiebungen und Frequenzen nicht mehr
+exakt, sondern nur noch eine Näherung, die durch <em>h-</em>Adaption
+gegen den exakten Wert konvergiert.</p>
+
+<p>Im praktischen Einsatz bedeutet dies, dass längere Stäbe in
+mehrere Elemente unterteilt werden müssen. Idealerweise rechnet
+man mit mindestens zwei unterschiedlich feinen Unterteilungen
+und vergleicht die Ergebnisse.</p>
+
+<h4>Beispiel</h4>
+<p>
+<img src="ModalEx1.gif"><img src="ModalEx2.gif"><br>
+Die erste Eigenform (Mode 0) eines Rahmens wurde mit zwei
+Elementierungen berechnet. Die Frequenzen der beiden Rechnungen
+stimmen hier schon recht gut überein (2.24 zu 2.26 Hz).
+</p>
+<p>
+Um höhere Eigenformen gut zu erfassen, sind generell feinere
+Elementierungen nötig.
+</p>
+
+<h4>Eingabe und Berechnung</h4>
+<p>
+Die Eingabe des Systems erfolgt wie bei der statischen Berechnung.
+Es sollten keine Lasten eingegeben werden. Die Massebelegung
+der Elemente kann analog zu den Querschnittswerten in den entsprechenden
+Dialogen vorgenommen werden.
+</p>
+<p>Zur Berechnung wird nun 'Results - modal analysis' aufgerufen.</p>
+
+<h4>Ausgabe der Ergebnisse</h4>
+<p>
+Analog zur statischen Berechnung können Verschiebungen (und Schnittgrößen
+unter den entsprechenden Einheitsverschiebungen) in verschiedenen Skalierungen
+angezeigt werden.</p>
+<p>Die Verschiebungsfigur kann mit 'Results - animate mode' animiert
+angezeigt werden.<br>
+<img src="anim.gif"></p>
+<p>Mit 'Results - show next mode' und 'previous mode' kann die
+gewünschte Eigenform ausgewählt werden. Nummer und Frequenz der
+Eigenform wird in der Statuszeile angezeigt.</p>
+
+
+<hr>
+<table width=100%><tr><td align=center><a href="kap6.html">zurück</a></td><td align=center><a href="jbeam.html">Inhalt</a></td></tr></table>
+
+</body>
+</html>

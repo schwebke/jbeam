@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>JBeam Chapter 5</title>
+</head>
+
+<body>
+<center>
+<h2>JBeam</h2>
+<h3>Structural Analysis for the <em>Java</em>-Platform</h3>
+<table width=100%><tr><td align=center><a href="kap4.html">previous</a></td><td align=center><a href="jbeam.html">Contents</a></td><td align=center><a href="kap6.html">next</a></td></tr></table>
+</center>
+<hr>
+<h2>Chapter 5</h2>
+
+<h3>Elements</h3>
+<h4>Truss Element</h4>
+<p>
+<img src="Truss.gif"><br>
+The truss element is a simple beam with hinges at both ends.
+Loads can only be applied at the nodes.
+Beside the label only the elongation stiffnes <em>EA</em> can be set.
+</p>
+<p>
+Nodes only connected to truss elements have to have the restricted rotational
+degree of freedom (<em>r</em>).
+</p>
+
+<h4>EB-Beam Element</h4>
+<p>
+<img src="EBBeam.gif"><br>
+EB-Beam is a Euler-Bernoulli beam with bending. No shear deformation
+is taken into account. Besides nodal loading distributed linear normal
+(<em>ni</em>, <em>nk</em>) and shear
+(<em>vi</em>, <em>vk</em>) loading is supported.
+</p>
+<p>
+You can insert arbitraty hinges at both ends of the beam.
+Use the <em>... hinge</em> checkboxes in the properties dialogue.
+Don't insert multiple hinges - this would lead to a kinematic system.
+</p>
+
+<h4>EBS-Beam Element</h4>
+<p>
+<img src="EBSBeam.gif"><br>
+EBS-Beam is a Timoshenko beam element with shear deformation.
+Except this it corresponds to the EB-Beam element.
+</p>
+
+
+<hr>
+<table width=100%><tr><td align=center><a href="kap4.html">previous</a></td><td align=center><a href="jbeam.html">Contents</a></td><td align=center><a href="kap6.html">next</a></td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>JBeam Chapter 7</title>
+</head>
+
+<body>
+<center>
+<h2>JBeam</h2>
+<h3>Structural Analysis for the <em>Java</em>-Platform</h3>
+<table width=100%><tr><td align=center><a href="kap6.html">previous</a></td><td align=center><a href="jbeam.html">Contents</a></td></tr></table>
+</center>
+<hr>
+<h2>Chapter 7</h2>
+
+<h3>Modal Analysis</h3>
+<h4>Overview</h4>
+<p>In addition to the static analysis of displacements and stress
+resultants JBeam also supports a modal analysis of the system.
+You get eigenfrequencies and eigenmodes as a result.</p>
+
+<p>In modal analysis the lumped mass method is used. This is
+no longer an exact calculation but only an approximation
+converging to the exact solution using <em>h-</em>adaption.</p>
+
+<p>For the practical use this means you have to subdivide longer
+beams into several elements. You should perform at least two
+calculations at different refinement levels and compare the
+results to get an idea of the reached accuracy.</p>
+
+<h4>Example</h4>
+<p>
+<img src="ModalEx1.gif"><img src="ModalEx2.gif"><br>
+The first eigenmode of a frame is calculated using to
+refinement levels. The eigenfrequencies of both calculation
+do not differ very much (2.24 vs. 2.26 Hz).
+</p>
+<p>
+To determine higher eingenmodes you will need more refinement.
+</p>
+
+<h4>Input and Calculation</h4>
+<p>
+The problem description input is analogous to static analysis.
+You should not put any loading on the system. The mass of the elements
+can be set in the corresponding dialogues in the same way as for sectional values.
+</p>
+<p>To (re)calculate use 'Results - modal analysis'.</p>
+
+<h4>Result Output</h4>
+<p>
+Displacements and stress resultants for the different eigenmodes can
+be displayed in arbitraty scalings in the same way as for static analysis.
+</p>
+<p>You can animate the displacement figure using 'Results - animate mode'.
+<br>
+<img src="anim.gif"></p>
+<p>Use 'Results - show next mode' and 'previous mode' two
+switch between the desired eigenmodes. Number and frequency of
+the current eigenmode is displayed in the status line.
+</p>
+
+
+<hr>
+<table width=100%><tr><td align=center><a href="kap6.html">back</a></td><td align=center><a href="jbeam.html">Contents</a></td></tr></table>
+
+</body>
+</html>

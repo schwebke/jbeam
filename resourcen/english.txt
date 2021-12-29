@@ -1,0 +1,131 @@
+MenuFile=File
+MItemNew=new
+MItemOpen=open
+MItemSave=save
+MItemExit=exit
+
+MenuEdit=Edit
+MItemSelect=select
+MItemInfo=show information
+MItemSelectWindow=select window
+MItemProperties=properties
+MItemMove=move
+MItemDelete=delete
+
+MenuPreferences=Preferences
+MItemSecVals=sectional values
+MItemSnapGrid=snap and grid
+MItemView=view
+MItemZoomIn=zoom in
+MItemZoomOut=zoom out
+MItemPan=pan
+MItemShowAll=show all
+MItemZoomWindow=zoom window
+
+MenuNode=Node
+MItemNodeF=free
+MItemNodeX=x constrained
+MItemNodeZ=z constrained
+MItemNodeXZ=xz constrained
+MItemNodeR=r constrained
+MItemNodeRX=rx constrained
+MItemNodeRZ=rz constrained
+MItemNodeRXZ=rxz constrained
+
+MenuElement=Element
+MItemTruss=truss
+MItemEBBeam=EB beam
+MItemEBSBeam=EBS beam
+
+MenuResults=Results
+MItemCalculate=calculate static
+MItemCalculateModal=modal analysis
+MItemNextMode=show next mode
+MItemPrevMode=show previous mode
+MItemAnimateMode=animate mode
+MItemShowDis=show displacement
+MItemShowM=show moment
+MItemShowN=show normal force
+MItemShowV=show shear force
+MItemWriteASC=write to ASCII-file
+MItemWriteHTML=write to HTML-file
+
+MItemAbout=about
+
+
+ButtonNew=new file
+ButtonOpen=open existing file
+ButtonSave=save current file
+ButtonSelect=select mode
+ButtonSelectWindow=select window
+ButtonProperties=change properties of selected objects
+ButtonMove=move selected objects
+ButtonDelete=delete selected objects
+ButtonInfo=show information
+ButtonZoomIn=zoom in
+ButtonZoomOut=zoom out
+ButtonPan=pan
+ButtonShowAll=show all
+ButtonZoomWindow=zoom window
+ButtonFNode=add free node
+ButtonRNode=add r constrained node
+ButtonTruss=add truss element
+ButtonEBBeam=add EB beam element
+ButtonEBSBeam=add EBS beam element
+
+
+DlgOK=OK
+DlgCancel=Cancel
+
+DlgLabel=Label
+DlgM=Distributed Mass
+
+DlgEBBeamHinge=hinge
+DlgEBBeamEA=EA
+DlgEBBeamEI=EI
+DlgEBSBeamGAs=GAs
+
+DlgTrussEA=EA
+
+DlgGridSnapGrid=Snap grid
+DlgGridVisibleGrid=Visible grid
+DlgGridCheckRadius=Check radius
+
+DlgNodeCX=constrain X displacement
+DlgNodeCZ=constrain Z displacement
+DlgNodeCR=constrain rotation
+DlgNodeForceX=Force X
+DlgNodeForceZ=Force Z
+DlgNodeMoment=Moment
+
+DlgSecValsDefaultEA=Default EA
+DlgSecValsDefaultEI=Default EI
+DlgSecValsDefaultGAs=Default GAs
+DlgSecValsDefaultM=Default m
+
+DlgViewBaseSize=Base size
+DlgViewDisplacementScale=displacement scale
+DlgViewMomentScale=moment scale
+DlgViewNormalForceScale=normal force scale
+DlgViewShearForceScale=shear force scale
+
+DlgInfoNode=Node
+DlgInfoDisplacements=Displacements
+DlgInfoSupportReactions=Support Reactions
+DlgInfoNoResults=no results available
+DlgInfoTruss=Truss
+DlgInfoEBBeam=EB Beam
+DlgInfoEBSBeam=EB Beam with shear
+DlgInfoNormalForces=Normal Forces
+DlgInfoMaxDisplace=max. displace
+DlgInfoMinDisplace=min. displace
+DlgInfoAt=at
+DlgInfoMoments=Moments
+DlgInfoShearForces=Shear Forces
+DlgInfoNormalForces=Normal Forces
+
+ResTitle=JBeam Results
+ResSupportReactions=Support Reactions
+ResNode=Node
+ResNodalDisplacements=Nodal Displacements
+ResStressResultants=Stress Resultants

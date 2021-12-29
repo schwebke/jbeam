@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>JBeam Chapter 1</title>
+</head>
+
+<body>
+<center>
+<h2>JBeam</h2>
+<h3>Structural Analysis for the <em>Java</em>-Platform</h3>
+<table width=100%><tr><td align=center><a href="einf.html">previous</a></td><td align=center><a href="jbeam.html">Contents</a></td><td align=center><a href="kap2.html">next</a></td></tr></table>
+</center>
+<hr>
+<h2>Chapter 1</h2>
+
+<h3>Note</h3>
+This document assumes the use of the english localisation (default).
+If using another language package the names will differ accordingly.
+
+<h3>A simple example</h3>
+<p>
+Given the following system<br>
+<img src="Example1.gif"><br>
+the clamping moment at node A is searched.
+</p>
+
+<p>
+To start a new problem description launch JBeam or
+use the menu command 'File-new'. You can also make use
+of the toolbar button <img src="New.gif">.
+</p>
+
+<p>
+Now insert node A. This node is fully constrained, so
+use the menu command 'Node - rxz constrained'.
+Move the mouse to the position (X = -5 / Z = 0), which is
+displayed in the status line and left-click to place the node.
+</p>
+
+<p>
+Node B will be inserted in the same way at position (X = 5 / Z = 0),
+but choose 'Node - z constrained' this time
+to select the appropriate support condition.
+You can also insert an unconstrained Node (symbol <img src="FreeNode.gif">)
+and edit the support condition in the property window popping up after right-clicking
+the node.
+The properties of every node and element can be edited in this way.
+To insert nodes which are not located on the current snap grid (e.g. X=10.125) just
+change there coordinates in the property window after inserting them
+somewhere.
+</p>
+
+
+<p>
+To delete a wrong element select it first. Use 'Edit-select' or
+<img src="Select.gif"> to switch into 'Select' mode and click on
+the element. The current mode is displayed in the status line on
+the right hand side.
+All selected elements will be displayed in blue colour.
+Delete them using <img src="Delete.gif"> or 'Edit - delete'.
+</p>
+
+<p>
+Now that all required nodes are created you can insert the beam
+element.
+Use <img src="EBSBeam.gif"> or
+'Element - EBS beam' to switch to beam insertion mode.
+Click on the start node and then on the end node. You will
+get an error message in the status line if no node was found
+or a rubber band if the start node could be identified.
+To abort element insertion just right click somewhere.
+</p>
+
+<p>In addition to 'EBS beam' (beam element with shear deformation)
+the following elements are available:
+<ul>
+   <li><img src="EBBeam.gif">'EB beam' - classic Euler-Bernoulli beam without
+       shear deformation</li>
+   <li><img src="Truss.gif">'Truss' - truss element without bending</li>
+</ul>
+The 'EBS beam' element is the most flexible one and should be preferred.
+</p>
+
+<p><em>Caution:</em> If you connect only truss elements to a node you need
+to clamp the rotational degree of freedom to avoid a cinematic system.</p>
+
+<p>
+Now your drawing area should look like this:<br>
+<img src="Example2.gif"><br>
+</p>
+
+<p>
+To impose the loading you have to edit the beam properties.
+Select the beam and use <img src="Properties.gif"> or 'Edit - properties'.
+As a short-cut you can also just right click the element.
+</p>
+
+<p>
+Enter 5 in the field 'vk' of the 'Edit EBBeam' dialogue.
+To activate the result output for the element enter a name
+in the label field - e.g. 'Element 1'.
+</p>
+
+<p>
+Now your drawing area should look like this:<br>
+<img src="Example3.gif"><br>
+</p>
+
+<p>
+Assign the labels 'A' and 'B' to the two nodes in the same way.
+</p>
+
+<p>
+The problem definition is complete. Calculate the results using
+'Results - calculate static'.
+</p>
+
+<p>
+To show the displacement activate 'Results - show displacement'.
+You can display the bending moments using 'Results - show moment'.
+The moment diagram will be scaled improperly large.
+To fix this change the scaling factor to 0.2 in the dialogue 'Preferences - view'.
+</p>
+
+<p>
+Displacements:<br>
+<img src="Example4.gif">
+</p>
+
+<p>
+Bending moments:<br>
+<img src="Example5.gif">
+</p>
+
+<p>
+Shear forces:<br>
+<img src="Example6.gif">
+</p>
+
+<p>
+<a name="Problem1"></a>
+You can get a formatted output of the numerical
+results in HTML.
+Use 'Results - write to HTML-file' and enter
+an appropriate file name (e.g. <a href="Problem1.html">'Problem1.html'</a>).
+Now open the exported file in your web browser.
+You will see in three sections for every labeled element
+the support reactions, the nodal displacements and the stress resultants.
+</p>
+
+<p>
+In this case the searched clamping moment is reported
+as 'M' at node 'A' as well as 'Mi' of 'Element 1' with
+-29,167 kN.
+</p>
+
+<p>An alternate way to get results without writing to a file
+is using the info mode with 'edit - show information'
+or <img src="Info.gif">.
+Just click on the nodes or elements you are interested in and you
+will get the numerical results - even for elements you have not
+assigned a label.
+<br>
+<img src="info.gif">
+</p>
+
+<p>
+You can save the entered problem description using <img src="Save.gif">
+or 'File - save'.
+</p>
+
+<hr>
+<table width=100%><tr><td align=center><a href="einf.html">previous</a></td><td align=center><a href="jbeam.html">Contents</a></td><td align=center><a href="kap2.html">next</a></td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+MenuFile=Datei
+MItemNew=Neu
+MItemOpen=Öffnen
+MItemSave=Speichern
+MItemExit=Beenden
+
+MenuEdit=Bearbeiten
+MItemSelect=Selektieren
+MItemInfo=Informationen
+MItemSelectWindow=Selektieren im Fenster
+MItemProperties=Eigenschaften
+MItemMove=Verschieben
+MItemDelete=Löschen
+
+MenuPreferences=Optionen
+MItemSecVals=Querschnittswerte
+MItemSnapGrid=Fang- und Zeichenraster
+MItemView=Anzeige
+MItemZoomIn=Größer
+MItemZoomOut=Kleiner
+MItemPan=Schieben
+MItemShowAll=Zoom Alles
+MItemZoomWindow=Zoom Fenster
+
+MenuNode=Knoten
+MItemNodeF=Frei
+MItemNodeX=x festhalten
+MItemNodeZ=z festhalten
+MItemNodeXZ=xz festhalten
+MItemNodeR=r festhalten
+MItemNodeRX=rx festhalten
+MItemNodeRZ=rz festhalten
+MItemNodeRXZ=rxz festhalten
+
+MenuElement=Element
+MItemTruss=Stab
+MItemEBBeam=EB Balken
+MItemEBSBeam=EBS Balken
+
+MenuResults=Ergebnis
+MItemCalculate=Statische Berechnung
+MItemCalculateModal=Modale Analyse
+MItemShowDis=Verschiebung anzeigen
+MItemShowM=Moment anzeigen
+MItemShowN=Normalkraft anzeigen
+MItemShowV=Querkraft anzeigen
+MItemNextMode=nächste Eigenform
+MItemPrevMode=vorige Eigenform
+MItemAnimateMode=Eigenform animieren
+MItemWriteASC=ASCII-file ausgeben
+MItemWriteHTML=HTML-file ausgeben
+
+MItemAbout=Über
+
+
+ButtonNew=neue Datei
+ButtonOpen=Öffnen
+ButtonSave=Speichern
+ButtonSelect=Selektieren
+ButtonSelectWindow=Selektieren im Fenster
+ButtonProperties=Eigenschaften
+ButtonMove=Verschieben
+ButtonDelete=Löschen
+ButtonInfo=Informationen
+ButtonZoomIn=Größer
+ButtonZoomOut=Kleiner
+ButtonPan=Schieben
+ButtonZoomWindow=Zoom Fenster
+ButtonShowAll=Zoom Alles
+ButtonCenterView=Alles
+ButtonFNode=freier Knoten
+ButtonRNode=R gehaltener Knoten
+ButtonTruss=Stab
+ButtonEBBeam=EB Balken
+ButtonEBSBeam=EBS Balken
+
+
+DlgOK=OK
+DlgCancel=Abbruch
+
+DlgLabel=Bezeichner
+DlgM=Massenbelegung
+
+DlgEBBeamHinge=Gelenk
+DlgEBBeamEA=EA
+DlgEBBeamEI=EI
+DlgEBSBeamGAs=GAs
+
+DlgTrussEA=EA
+
+DlgGridSnapGrid=Fangraster
+DlgGridVisibleGrid=Anzeigenraster
+DlgGridCheckRadius=Selektionsradius
+
+DlgNodeCX=Verschiebung X festhalten
+DlgNodeCZ=Verschiebung Z festhalten
+DlgNodeCR=Verdrehung festhalten
+DlgNodeForceX=Kraft X
+DlgNodeForceZ=Kraft Z
+DlgNodeMoment=Moment
+
+DlgSecValsDefaultEA=Vorgabewert EA
+DlgSecValsDefaultEI=Vorgabewert EI
+DlgSecValsDefaultGAs=Vorgabewert GAs
+DlgSecValsDefaultM=Vorgabewert m
+
+DlgViewBaseSize=Basisgröße
+DlgViewDisplacementScale=Skalierung Verschiebungsfigur
+DlgViewMomentScale=Skalierung Momentenverlauf
+DlgViewNormalForceScale=Skalierung Normalkraftverlauf
+DlgViewShearForceScale=Skalierung Querkraftverlauf
+
+DlgInfoNode=Knoten
+DlgInfoDisplacements=Verschiebungen
+DlgInfoSupportReactions=Auflagerkräfte
+DlgInfoNoResults=Keine Ergebnisse verfügbar
+DlgInfoTruss=Stab
+DlgInfoEBBeam=EB Balken
+DlgInfoEBSBeam=EB Balken mit Schub
+DlgInfoNormalForces=Normalkräfte
+DlgInfoMaxDisplace=max. Versch.
+DlgInfoMinDisplace=min. Versch.
+DlgInfoAt=bei
+DlgInfoMoments=Momente
+DlgInfoShearForces=Querkräfte
+DlgInfoNormalForces=Normalkräfte
+
+
+ResTitle=JBeam Ergebnisse
+ResSupportReactions=Auflagerkräfte
+ResNode=Knoten
+ResNodalDisplacements=Knotenverschiebungen
+ResStressResultants=Schnittgrößen
+
+

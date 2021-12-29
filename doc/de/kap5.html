@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>JBeam Kapitel 5</title>
+<meta charset="utf-8"/>
+</head>
+
+<body>
+<center>
+<h2>JBeam</h2>
+<h3>Ein Stabwerksprogramm für die <em>Java</em>-Plattform</h3>
+<table width=100%><tr><td align=center><a href="kap4.html">zurück</a></td><td align=center><a href="jbeam.html">Inhalt</a></td><td align=center><a href="kap6.html">vor</a></td></tr></table>
+</center>
+<hr>
+<h2>Kapitel 5</h2>
+
+<h3>Elemente</h3>
+<h4>Truss-Element</h4>
+<p>
+<img src="Truss.gif"><br>
+Das Truss-Element ist ein einfacher Fachwerk-Stab mit beidseitig
+gelenkigem Anschluß, der nur in den Knoten belastet werden kann.
+Neben dem Label kann nur die Dehnsteifigkeit <em>EA</em> eingestellt
+werden.
+</p>
+<p>
+Knoten, an denen nur Truss-Elemente anschließen, müssen den Drehfreiheitsgrad
+(<em>r</em>) ausgeschaltet haben.
+</p>
+
+<h4>EB-Beam-Element</h4>
+<p>
+<img src="EBBeam.gif"><br>
+Das EB-Beam-Element ist ein Euler-Bernoulli-Biegebalkenelement ohne
+Berücksichtigung der Schubverzerrung. Neben Knotenlasten können
+auch lineare Längs- (<em>ni</em>, <em>nk</em>) und Querlasten
+(<em>vi</em>, <em>vk</em>) aufgebracht werden.
+</p>
+<p>
+Weiterhin können beliebige Gelenkbedingungen an den Stabenden
+berücksichtigt werden. (Die <em>... hinge</em>-Checkboxen des
+Properties-Dialoges fügen ein entsprechendes Gelenk ein).
+Es ist darauf zu achten, daß nicht doppelte Gelenke entstehen,
+die zu einem kinematischen System führen.
+</p>
+
+<h4>EBS-Beam-Element</h4>
+<p>
+<img src="EBSBeam.gif"><br>
+Das EBS-Beam-Element ist ein Timoshenko-Biegebalkenelement mit
+Berücksichtigung der Schubverzerrung. Ansonsten entspricht
+es dem EB-Beam-Element.
+</p>
+
+
+<hr>
+<table width=100%><tr><td align=center><a href="kap4.html">zurück</a></td><td align=center><a href="jbeam.html">Inhalt</a></td><td align=center><a href="kap6.html">vor</a></td></tr></table>
+
+</body>
+</html>

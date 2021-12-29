@@ -1,0 +1,62 @@
+----------------------------------------------------------------------------
+JBeam 4 - Ein Stabwerksprogramm für die Java-Plattform
+======================================================
+
+   Copyright (C) 1998, 1999               Kai Gerd Schwebke
+   Copyright (C) 2000, 2001, 2002, 2012   Schwebke Software Development
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
+Installation
+============
+
+Das Programm kann nach dem Entpacken direkt gestartet werden - eine
+Installation ist nicht erforderlich.
+
+JBeam benötigt eine Java 6 VM (JDK oder JRE ab Version 1.6).
+
+Die Standardsprache der Benutzeroberfläche nach dem Entpacken
+ist Englisch. Diese wird durch die Einträge in der Lokalisierungsdatei
+'resourcen/locale.txt' festgelegt. Diese Datei kann ersetzt
+werden, wenn eine andere Sprache gewünscht wird.
+Eine deutsche Lokalisierungsdatei liegt bei ('resourcen/deutsch.txt'),
+weitere können vom Benutzer bei Bedarf erzeugt werden.
+
+
+Programmstart
+=============
+
+Das Programm wird aus dem Installationsverzeichnis durch
+Aufruf der Java-VM mit der Option '-jar jbeam.jar' gestartet.
+Für Unix- und Windowssysteme liegen entsprechende Startscripte
+bei, in denen noch die Pfade zur Java-VM anzupassen sind.
+
+Unter Windows kann das Programm alternativ durch Doppelklick
+auf die Datei 'jbeam.jar' gestartet werden.
+
+JBeam kann auch als Applet verwendet werden (siehe 'index.html'
+im Distributionsverzeichnis).
+
+
+Feedback
+========
+
+Kommentare, Verbesserungshinweise und Probleme können unter
+jbeam@schwebke.com mitgeteilt werden.
+
+----------------------------------------------------------------------------
+http://jbeam.schwebke.com/
+2012-01-01
