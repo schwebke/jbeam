@@ -26,6 +26,7 @@ import com.schwebke.jbeam.view.*;
 import com.schwebke.jbeam.model.*;
 import com.schwebke.jbeam.tool.*;
 import com.schwebke.jbeam.plugin.*;
+import com.schwebke.jbeam.persistence.*;
 
 // fremde Packages
 import java.awt.BorderLayout;
@@ -95,8 +96,8 @@ public class JBeam implements IHost
     private JLabel posY;
     private String addElementType;
 
-    public final static String version="4.0.0";
-    public final static String verdate="2012-01-01";
+    public final static String version="4.1.0";
+    public final static String verdate="2025-01-01";
 
     // letztes Verzeichnis bei FileChoose
     File fileChooseDir;
@@ -671,9 +672,16 @@ public class JBeam implements IHost
                    if (fileChooseDir != null) {
                        chooser.setCurrentDirectory(fileChooseDir);
                    }
+		   
+		   // Add file filters for supported formats
 		   ExampleFileFilter jbmFilter = 
 		       new ExampleFileFilter("jbm", "JBeam Data Files");
-		   chooser.setFileFilter(jbmFilter);
+		   ExampleFileFilter jsonFilter = 
+		       new ExampleFileFilter("json", "JBeam JSON Files");
+		   chooser.addChoosableFileFilter(jsonFilter);
+		   chooser.addChoosableFileFilter(jbmFilter);
+		   chooser.setFileFilter(jsonFilter); // Default to JSON
+		   
 		   chooser.setDialogType(JFileChooser.SAVE_DIALOG);
 		   chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		   int ret = chooser.showDialog(mainFrame, null);
@@ -681,26 +689,38 @@ public class JBeam implements IHost
 		   if (ret == JFileChooser.APPROVE_OPTION)
 		   {
 		       status.setText("writing...");
-		       FileOutputStream ostream=null;
+		       FileOutputStream ostream = null;
 		       try {
-			   ostream=new FileOutputStream(
-				   chooser.getSelectedFile().getAbsolutePath()
-			       );
-			   ObjectOutputStream p=new ObjectOutputStream(ostream);
-			   p.writeObject(model);
-			   status.setText("write OK");
+		           String filename = chooser.getSelectedFile().getAbsolutePath();
+		           String extension = getFileExtension(filename);
+		           
+		           // Add appropriate extension if not present
+		           if (extension.isEmpty()) {
+		               String filterDesc = chooser.getFileFilter().getDescription();
+		               if (filterDesc.contains("Data Files")) {
+		                   filename += ".jbm";
+		                   extension = "jbm";
+		               } else {
+		                   filename += ".json";
+		                   extension = "json";
+		               }
+		           }
+		           
+		           ostream = new FileOutputStream(filename);
+		           PersistenceManager.getInstance().save(model, ostream, extension);
+		           status.setText("write OK");
                            fileChooseDir = chooser.getCurrentDirectory();
-		       } catch (IOException e) {
+		       } catch (Exception e) {
 			   status.setText("write error: "+e.getMessage());
 			   JOptionPane.showMessageDialog(null, 
 			       "File write error!\n"+
-			       "Check the filename and permissions.", 
+			       "Check the filename and permissions.\n"+
+			       "Error: " + e.getMessage(), 
 			       "Write Error", 
 			       JOptionPane.ERROR_MESSAGE);
 		       } finally {
 			   try {
-			       if (ostream != null)
-			       {
+			       if (ostream != null) {
 				   ostream.close();
 			       }
 			   } catch (IOException e) {
@@ -716,9 +736,15 @@ public class JBeam implements IHost
                        chooser.setCurrentDirectory(fileChooseDir);
                    }
 
-		   chooser.setFileFilter(
-			   new ExampleFileFilter("jbm", "JBeam Data Files")
-		       );
+		   // Add file filters for supported formats
+		   ExampleFileFilter jbmFilter = 
+		       new ExampleFileFilter("jbm", "JBeam Data Files");
+		   ExampleFileFilter jsonFilter = 
+		       new ExampleFileFilter("json", "JBeam JSON Files");
+		   chooser.addChoosableFileFilter(jsonFilter);
+		   chooser.addChoosableFileFilter(jbmFilter);
+		   chooser.setFileFilter(jsonFilter); // Default to JSON
+		   
 		   chooser.setDialogType(JFileChooser.OPEN_DIALOG);
 		   chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		   int ret = chooser.showDialog(mainFrame, null);
@@ -726,29 +752,53 @@ public class JBeam implements IHost
 		   if (ret == JFileChooser.APPROVE_OPTION)
 		   {
 		       status.setText("reading...");
-		       FileInputStream istream=null;
+		       FileInputStream istream = null;
 		       try {
-			   istream=new FileInputStream(
-				   chooser.getSelectedFile().getAbsolutePath()
-			       );
-			   ObjectInputStream p=new ObjectInputStream(istream);
-			   model=(SelectableModel)(p.readObject());
-			   view.reset();
-			   view.setModel(model);
-			   initApp();
-			   status.setText("read OK");
+		           String filename = chooser.getSelectedFile().getAbsolutePath();
+		           String extension = getFileExtension(filename);
+		           
+		           istream = new FileInputStream(filename);
+		           model = PersistenceManager.getInstance().load(istream, extension);
+		           view.reset();
+		           view.setModel(model);
+		           initApp();
+		           
+		           // Check for validation warnings from JSON loading
+		           String statusMessage = "read OK";
+		           if ("json".equals(extension) && JsonPersistence.lastValidationResult != null) {
+		               if (!JsonPersistence.lastValidationResult.getWarnings().isEmpty()) {
+		                   int warningCount = JsonPersistence.lastValidationResult.getWarnings().size();
+		                   statusMessage = "read OK (" + warningCount + " warning" + (warningCount > 1 ? "s" : "") + ")";
+		                   
+		                   // Show warnings dialog
+		                   StringBuilder warningMessage = new StringBuilder();
+		                   warningMessage.append("Model loaded successfully with warnings:\n\n");
+		                   for (String warning : JsonPersistence.lastValidationResult.getWarnings()) {
+		                       warningMessage.append("• ").append(warning).append("\n");
+		                   }
+		                   warningMessage.append("\nYou can continue working with this model.");
+		                   
+		                   JOptionPane.showMessageDialog(mainFrame,
+		                       warningMessage.toString(),
+		                       "Model Warnings",
+		                       JOptionPane.WARNING_MESSAGE);
+		               }
+		               // Clear the result after use
+		               JsonPersistence.lastValidationResult = null;
+		           }
+		           status.setText(statusMessage);
                            fileChooseDir = chooser.getCurrentDirectory();
 		       } catch (Exception e) {
 			   status.setText("read error: "+e.getMessage());
 			   JOptionPane.showMessageDialog(null, 
 			       "File read error!\n"+
-			       "Check if the file is present and readable.", 
+			       "Check if the file is present and readable.\n"+
+			       "Error: " + e.getMessage(), 
 			       "Read Error", 
 			       JOptionPane.ERROR_MESSAGE);
 		       } finally {
 			   try {
-			       if (istream != null)
-			       {
+			       if (istream != null) {
 				   istream.close();
 			       }
 			   } catch (IOException e) {
@@ -1627,6 +1677,25 @@ public class JBeam implements IHost
       }
 
       throw new Error("JBeam::getResourceAsStream("+resourceName+"): cannot access");
+   }
+   
+   /**
+    * Helper method to extract file extension from filename.
+    * 
+    * @param filename the filename
+    * @return the file extension (without dot), or empty string if no extension
+    */
+   private String getFileExtension(String filename) {
+       if (filename == null || filename.isEmpty()) {
+           return "";
+       }
+       
+       int lastDotIndex = filename.lastIndexOf('.');
+       if (lastDotIndex == -1 || lastDotIndex == filename.length() - 1) {
+           return "";
+       }
+       
+       return filename.substring(lastDotIndex + 1).toLowerCase();
    }
 
 }

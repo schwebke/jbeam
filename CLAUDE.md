@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 JBeam is a Java-based structural analysis application for calculating plane frame and truss systems. It's a desktop application using Java Swing for the GUI and provides both standalone and applet execution modes.
 
+**Version 4.1** introduces comprehensive JSON persistence capabilities as an alternative to Java serialization, providing human-readable, version control friendly file formats.
+
 ## Build Commands
 
 ### Build the application
@@ -15,7 +17,7 @@ mvn clean package
 
 ### Run the application
 ```bash
-java -jar target/jbeam-4.0.0-jar-with-dependencies.jar
+java -jar target/jbeam-4.1.0-jar-with-dependencies.jar
 ```
 
 ### Compile only
@@ -52,8 +54,11 @@ mvn compile
 #### Plugin System (`com.schwebke.jbeam.plugin`)
 - Interfaces for extending the application (`IHost.java`, `IModel.java`)
 
-#### File Format
-- Native format: `.jbm` files using Java serialization
+#### Persistence System (`com.schwebke.jbeam.persistence`)
+- Strategy pattern supporting multiple file formats
+- JSON format (`.json`) with Schema validation - default format (v4.1+)
+- Java serialization format (`.jbm`) for backward compatibility
+- Comprehensive model validation with error/warning reporting
 - Text export: ASCII and HTML result output
 
 ## Development Notes
@@ -73,7 +78,8 @@ mvn compile
 ### Testing
 No automated tests are present in this codebase. Testing would typically involve:
 - Running the application and testing structural analysis calculations
-- Verifying file save/load operations
+- Verifying file save/load operations for both JSON and JBM formats
+- Testing JSON model validation with various error conditions
 - Testing the GUI components
 
 ### Code Style
@@ -85,7 +91,7 @@ No automated tests are present in this codebase. Testing would typically involve
 
 ### Architecture Documentation
 - **Location**: `doc/architecture/`
-- **JSON Persistence Design**: `doc/architecture/json-persistence/` - Complete design for adding JSON import/export capabilities as an alternative to Java serialization
+- **JSON Persistence Design**: `doc/architecture/json-persistence/` - Complete design and implementation of JSON import/export capabilities
 
 ### User Documentation  
 - **German**: `doc/user/de/` - German user documentation and tutorials

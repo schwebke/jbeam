@@ -1,5 +1,5 @@
-JBeam 4 - Plane Frame and Truss Calculation for the Java Platform
-=================================================================
+JBeam 4.1 - Plane Frame and Truss Calculation for the Java Platform
+===================================================================
 
    Copyright (C) 1998 Kai Gerd Schwebke
 
@@ -25,6 +25,16 @@ The program can be started right after decomprossion of the archive---
 installation is not necessary.
 
 To run JBeam a Java 11 VM is required (JDK or JRE version 11 or higher).
+
+File Formats
+============
+
+JBeam 4.1 supports multiple file formats:
+- **JSON format (.json)** - Human-readable, version control friendly (default)
+- **JBeam native format (.jbm)** - Java serialization for backward compatibility
+
+Both formats support the complete JBeam feature set including nodes, beams, 
+constraints, loads, distributed loads, and internal hinges.
 
 The standard language of the user interface after extraction
 is english. The language is given from the entries in the
@@ -55,4 +65,4 @@ jbeam@schwebke.com.
 
 ----------------------------------------------------------------------------
 http://jbeam.schwebke.com/
-2012-01-01
+2025-01-01
