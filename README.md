@@ -24,7 +24,7 @@ Installation
 The program can be started right after decomprossion of the archive---
 installation is not necessary.
 
-To run JBeam a Java 6 VM is required (JDK or JRE version 1.6 or higher).
+To run JBeam a Java 11 VM is required (JDK or JRE version 11 or higher).
 
 The standard language of the user interface after extraction
 is english. The language is given from the entries in the

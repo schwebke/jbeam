@@ -80,3 +80,13 @@ No automated tests are present in this codebase. Testing would typically involve
 - German comments and variable names throughout
 - Mixed German/English in code
 - Uses older Java patterns (pre-generics era originally, modernized to some extent)
+
+## Documentation
+
+### Architecture Documentation
+- **Location**: `doc/architecture/`
+- **JSON Persistence Design**: `doc/architecture/json-persistence/` - Complete design for adding JSON import/export capabilities as an alternative to Java serialization
+
+### User Documentation  
+- **German**: `doc/user/de/` - German user documentation and tutorials
+- **English**: `doc/user/en/` - English user documentation and tutorials

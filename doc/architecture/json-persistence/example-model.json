@@ -1,0 +1,122 @@
+{
+  "version": "1.0",
+  "modelType": "structural",
+  "nodes": [
+    {
+      "id": "node-1",
+      "label": "Left Support",
+      "coordinates": {
+        "x": 0.0,
+        "z": 0.0
+      },
+      "constraints": {
+        "x": true,
+        "z": true,
+        "r": false
+      },
+      "loads": {
+        "fx": 0.0,
+        "fz": 0.0,
+        "m": 0.0
+      }
+    },
+    {
+      "id": "node-2",
+      "label": "Mid Point",
+      "coordinates": {
+        "x": 5.0,
+        "z": 0.0
+      },
+      "constraints": {
+        "x": false,
+        "z": false,
+        "r": false
+      },
+      "loads": {
+        "fx": 0.0,
+        "fz": -1000.0,
+        "m": 0.0
+      }
+    },
+    {
+      "id": "node-3",
+      "label": "Right Support",
+      "coordinates": {
+        "x": 10.0,
+        "z": 0.0
+      },
+      "constraints": {
+        "x": false,
+        "z": true,
+        "r": true
+      },
+      "loads": {
+        "fx": 0.0,
+        "fz": 0.0,
+        "m": 0.0
+      }
+    }
+  ],
+  "beams": [
+    {
+      "id": "beam-1",
+      "type": "ebbeam",
+      "label": "Main Beam Left",
+      "nodeIds": ["node-1", "node-2"],
+      "material": {
+        "EA": 200000.0,
+        "EI": 50000.0
+      },
+      "mass": 150.0,
+      "distributedLoads": {
+        "vi": -500.0,
+        "vk": -500.0,
+        "ni": 0.0,
+        "nk": 0.0
+      },
+      "internalHinges": {
+        "ni": false,
+        "vi": false,
+        "mi": false,
+        "nk": false,
+        "vk": false,
+        "mk": false
+      }
+    },
+    {
+      "id": "beam-2",
+      "type": "ebbeam",
+      "label": "Main Beam Right",
+      "nodeIds": ["node-2", "node-3"],
+      "material": {
+        "EA": 200000.0,
+        "EI": 50000.0
+      },
+      "mass": 150.0,
+      "distributedLoads": {
+        "vi": -500.0,
+        "vk": -500.0,
+        "ni": 0.0,
+        "nk": 0.0
+      },
+      "internalHinges": {
+        "ni": false,
+        "vi": false,
+        "mi": false,
+        "nk": false,
+        "vk": false,
+        "mk": true
+      }
+    },
+    {
+      "id": "truss-1",
+      "type": "truss",
+      "label": "Tension Rod",
+      "nodeIds": ["node-1", "node-3"],
+      "material": {
+        "EA": 100000.0
+      },
+      "mass": 50.0
+    }
+  ]
+}
