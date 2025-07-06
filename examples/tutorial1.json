@@ -1,0 +1,65 @@
+{
+  "version" : "1.0",
+  "modelType" : "structural",
+  "nodes" : [ {
+    "id" : "node-1",
+    "label" : "A",
+    "coordinates" : {
+      "x" : -5.0,
+      "z" : 0.0
+    },
+    "constraints" : {
+      "x" : true,
+      "z" : true,
+      "r" : true
+    },
+    "loads" : {
+      "fx" : 0.0,
+      "fz" : 0.0,
+      "m" : 0.0
+    }
+  }, {
+    "id" : "node-2",
+    "label" : "B",
+    "coordinates" : {
+      "x" : 5.0,
+      "z" : 0.0
+    },
+    "constraints" : {
+      "x" : false,
+      "z" : true,
+      "r" : false
+    },
+    "loads" : {
+      "fx" : 0.0,
+      "fz" : 0.0,
+      "m" : 0.0
+    }
+  } ],
+  "beams" : [ {
+    "type" : "ebsbeam",
+    "id" : "beam-1",
+    "label" : "Element 1",
+    "nodeIds" : [ "node-1", "node-2" ],
+    "mass" : 1.0,
+    "material" : {
+      "EA" : 100000.0,
+      "EI" : 10000.0,
+      "GA" : 1.0E15
+    },
+    "distributedLoads" : {
+      "vi" : 0.0,
+      "vk" : 5.0,
+      "ni" : 0.0,
+      "nk" : 0.0
+    },
+    "internalHinges" : {
+      "ni" : false,
+      "vi" : false,
+      "mi" : false,
+      "nk" : false,
+      "vk" : false,
+      "mk" : false
+    }
+  } ]
+}

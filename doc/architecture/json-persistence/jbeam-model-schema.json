@@ -1,0 +1,379 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "JBeam Model Schema",
+  "description": "JSON Schema for JBeam 2D structural analysis models",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Schema version for compatibility",
+      "enum": ["1.0"]
+    },
+    "modelType": {
+      "type": "string",
+      "description": "Type of structural model",
+      "enum": ["structural"]
+    },
+    "nodes": {
+      "type": "array",
+      "description": "Array of structural nodes",
+      "items": {
+        "$ref": "#/definitions/Node"
+      }
+    },
+    "beams": {
+      "type": "array",
+      "description": "Array of structural beams",
+      "items": {
+        "$ref": "#/definitions/Beam"
+      }
+    }
+  },
+  "required": ["version", "modelType", "nodes", "beams"],
+  "definitions": {
+    "Node": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the node"
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable label for the node",
+          "default": ""
+        },
+        "coordinates": {
+          "$ref": "#/definitions/Coordinates2D"
+        },
+        "constraints": {
+          "$ref": "#/definitions/Constraints2D"
+        },
+        "loads": {
+          "$ref": "#/definitions/NodalLoads2D"
+        }
+      },
+      "required": ["id", "coordinates", "constraints", "loads"],
+      "additionalProperties": false
+    },
+    "Coordinates2D": {
+      "type": "object",
+      "description": "2D coordinates for plane frame analysis",
+      "properties": {
+        "x": {
+          "type": "number",
+          "description": "X coordinate"
+        },
+        "z": {
+          "type": "number",
+          "description": "Z coordinate (vertical in 2D plane)"
+        }
+      },
+      "required": ["x", "z"],
+      "additionalProperties": false
+    },
+    "Constraints2D": {
+      "type": "object",
+      "description": "2D constraints for plane frame analysis",
+      "properties": {
+        "x": {
+          "type": "boolean",
+          "description": "X translation constraint (cX)",
+          "default": false
+        },
+        "z": {
+          "type": "boolean",
+          "description": "Z translation constraint (cZ)",
+          "default": false
+        },
+        "r": {
+          "type": "boolean",
+          "description": "Rotation constraint (cR)",
+          "default": false
+        }
+      },
+      "required": ["x", "z", "r"],
+      "additionalProperties": false
+    },
+    "NodalLoads2D": {
+      "type": "object",
+      "description": "2D nodal loads",
+      "properties": {
+        "fx": {
+          "type": "number",
+          "description": "Force in X direction",
+          "default": 0.0
+        },
+        "fz": {
+          "type": "number",
+          "description": "Force in Z direction",
+          "default": 0.0
+        },
+        "m": {
+          "type": "number",
+          "description": "Moment about Y axis",
+          "default": 0.0
+        }
+      },
+      "required": ["fx", "fz", "m"],
+      "additionalProperties": false
+    },
+    "Beam": {
+      "type": "object",
+      "discriminator": {
+        "propertyName": "type"
+      },
+      "oneOf": [
+        {"$ref": "#/definitions/TrussBeam"},
+        {"$ref": "#/definitions/EBBeam"},
+        {"$ref": "#/definitions/EBSBeam"}
+      ]
+    },
+    "TrussBeam": {
+      "type": "object",
+      "description": "Truss element (axial forces only)",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the beam"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["truss"]
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable label for the beam",
+          "default": ""
+        },
+        "nodeIds": {
+          "type": "array",
+          "description": "Array of node IDs [startNode, endNode]",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "material": {
+          "$ref": "#/definitions/TrussMaterial"
+        },
+        "mass": {
+          "type": "number",
+          "description": "Mass per unit length",
+          "default": 0.0
+        }
+      },
+      "required": ["id", "type", "nodeIds", "material"],
+      "additionalProperties": false
+    },
+    "EBBeam": {
+      "type": "object",
+      "description": "Euler-Bernoulli beam element",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the beam"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["ebbeam"]
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable label for the beam",
+          "default": ""
+        },
+        "nodeIds": {
+          "type": "array",
+          "description": "Array of node IDs [startNode, endNode]",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "material": {
+          "$ref": "#/definitions/EBMaterial"
+        },
+        "mass": {
+          "type": "number",
+          "description": "Mass per unit length",
+          "default": 0.0
+        },
+        "distributedLoads": {
+          "$ref": "#/definitions/DistributedLoads"
+        },
+        "internalHinges": {
+          "$ref": "#/definitions/InternalHinges"
+        }
+      },
+      "required": ["id", "type", "nodeIds", "material"],
+      "additionalProperties": false
+    },
+    "EBSBeam": {
+      "type": "object",
+      "description": "Euler-Bernoulli beam with shear deformation",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the beam"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["ebsbeam"]
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable label for the beam",
+          "default": ""
+        },
+        "nodeIds": {
+          "type": "array",
+          "description": "Array of node IDs [startNode, endNode]",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "material": {
+          "$ref": "#/definitions/EBSMaterial"
+        },
+        "mass": {
+          "type": "number",
+          "description": "Mass per unit length",
+          "default": 0.0
+        },
+        "distributedLoads": {
+          "$ref": "#/definitions/DistributedLoads"
+        },
+        "internalHinges": {
+          "$ref": "#/definitions/InternalHinges"
+        }
+      },
+      "required": ["id", "type", "nodeIds", "material"],
+      "additionalProperties": false
+    },
+    "TrussMaterial": {
+      "type": "object",
+      "description": "Material properties for truss elements",
+      "properties": {
+        "EA": {
+          "type": "number",
+          "description": "Axial stiffness (E * A)",
+          "minimum": 0
+        }
+      },
+      "required": ["EA"],
+      "additionalProperties": false
+    },
+    "EBMaterial": {
+      "type": "object",
+      "description": "Material properties for Euler-Bernoulli beams",
+      "properties": {
+        "EA": {
+          "type": "number",
+          "description": "Axial stiffness (E * A)",
+          "minimum": 0
+        },
+        "EI": {
+          "type": "number",
+          "description": "Flexural stiffness (E * I)",
+          "minimum": 0
+        }
+      },
+      "required": ["EA", "EI"],
+      "additionalProperties": false
+    },
+    "EBSMaterial": {
+      "type": "object",
+      "description": "Material properties for Euler-Bernoulli beams with shear",
+      "properties": {
+        "EA": {
+          "type": "number",
+          "description": "Axial stiffness (E * A)",
+          "minimum": 0
+        },
+        "EI": {
+          "type": "number",
+          "description": "Flexural stiffness (E * I)",
+          "minimum": 0
+        },
+        "GA": {
+          "type": "number",
+          "description": "Shear stiffness (G * A)",
+          "minimum": 0
+        }
+      },
+      "required": ["EA", "EI", "GA"],
+      "additionalProperties": false
+    },
+    "DistributedLoads": {
+      "type": "object",
+      "description": "Distributed loads along beam element",
+      "properties": {
+        "vi": {
+          "type": "number",
+          "description": "Distributed load at start node (perpendicular to beam)",
+          "default": 0.0
+        },
+        "vk": {
+          "type": "number",
+          "description": "Distributed load at end node (perpendicular to beam)",
+          "default": 0.0
+        },
+        "ni": {
+          "type": "number",
+          "description": "Distributed load at start node (along beam axis)",
+          "default": 0.0
+        },
+        "nk": {
+          "type": "number",
+          "description": "Distributed load at end node (along beam axis)",
+          "default": 0.0
+        }
+      },
+      "required": ["vi", "vk", "ni", "nk"],
+      "additionalProperties": false
+    },
+    "InternalHinges": {
+      "type": "object",
+      "description": "Internal hinge conditions at beam ends",
+      "properties": {
+        "ni": {
+          "type": "boolean",
+          "description": "Normal force hinge at start node",
+          "default": false
+        },
+        "vi": {
+          "type": "boolean",
+          "description": "Shear force hinge at start node",
+          "default": false
+        },
+        "mi": {
+          "type": "boolean",
+          "description": "Moment hinge at start node",
+          "default": false
+        },
+        "nk": {
+          "type": "boolean",
+          "description": "Normal force hinge at end node",
+          "default": false
+        },
+        "vk": {
+          "type": "boolean",
+          "description": "Shear force hinge at end node",
+          "default": false
+        },
+        "mk": {
+          "type": "boolean",
+          "description": "Moment hinge at end node",
+          "default": false
+        }
+      },
+      "required": ["ni", "vi", "mi", "nk", "vk", "mk"],
+      "additionalProperties": false
+    }
+  }
+}
