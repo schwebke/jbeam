@@ -53,9 +53,6 @@ Some starting scripts for Unix- and Windows-systems are distributed.
 
 Simply double click the file 'jbeam.jar' under Windows, alternativly.
 
-JBeam can also be used as an Applet---see the file "index.html"
-in the distribution.
-
 
 Feedback
 ========
@@ -65,4 +62,3 @@ jbeam@schwebke.com.
 
 ----------------------------------------------------------------------------
 http://jbeam.schwebke.com/
-2025-01-01
