@@ -11,14 +11,90 @@ public class HtmlView {
 
     Model model;
     IController controller;
+    boolean showAllItems;
 
     public HtmlView(Model model, IController controller) {
+        this(model, controller, false);
+    }
+    
+    public HtmlView(Model model, IController controller, boolean showAllItems) {
         this.model = model;
         this.controller = controller;
+        this.showAllItems = showAllItems;
     }
 
     String format(double number) {
         return controller.getNumberFormat().format(number);
+    }
+    
+    /**
+     * Generate JSON-style ID for a node based on its position in the model.
+     */
+    private String getNodeId(Node targetNode) {
+        int counter = 1;
+        for (Node node : model.getNodeIterator()) {
+            if (node == targetNode) {
+                return "node-" + counter;
+            }
+            counter++;
+        }
+        return "node-unknown";
+    }
+    
+    /**
+     * Generate JSON-style ID for a beam based on its position in the model.
+     */
+    private String getBeamId(Beam targetBeam) {
+        int counter = 1;
+        for (Beam beam : model.getBeamIterator()) {
+            if (beam == targetBeam) {
+                return "beam-" + counter;
+            }
+            counter++;
+        }
+        return "beam-unknown";
+    }
+    
+    /**
+     * Get display name for a node (label if available, otherwise JSON-style ID).
+     */
+    private String getNodeDisplayName(Node node) {
+        if (node.getLabel() != null && !node.getLabel().trim().isEmpty()) {
+            return "'" + node.getLabel() + "' (" + getNodeId(node) + ")";
+        } else {
+            return getNodeId(node);
+        }
+    }
+    
+    /**
+     * Get display name for a beam (label if available, otherwise JSON-style ID).
+     */
+    private String getBeamDisplayName(Beam beam) {
+        if (beam.getLabel() != null && !beam.getLabel().trim().isEmpty()) {
+            return "'" + beam.getLabel() + "' (" + getBeamId(beam) + ")";
+        } else {
+            return getBeamId(beam);
+        }
+    }
+    
+    /**
+     * Check if node should be included in output.
+     */
+    private boolean shouldIncludeNode(Node node) {
+        if (showAllItems) {
+            return true;
+        }
+        return node.getLabel() != null && !node.getLabel().trim().isEmpty();
+    }
+    
+    /**
+     * Check if beam should be included in output.
+     */
+    private boolean shouldIncludeBeam(Beam beam) {
+        if (showAllItems) {
+            return true;
+        }
+        return beam.getLabel() != null && !beam.getLabel().trim().isEmpty();
     }
 
     public void write(PrintWriter writer) {
@@ -50,9 +126,9 @@ public class HtmlView {
             writer.println("<tr><th bgcolor=#FFCCCC>"
                     + locale.getString("ResNode") + "</th><th bgcolor=#CCCCFF>Fx</th><th bgcolor=#CCCCFF>Fz</th><th bgcolor=#CCCCFF>M</th></tr>");
             for (Node node : model.getNodeIterator()) {
-                if ((!node.getLabel().equals("")) && (node.getCX() || node.getCZ() || node.getCR())) {
+                if (shouldIncludeNode(node) && (node.getCX() || node.getCZ() || node.getCR())) {
                     writer.println("<tr>");
-                    writer.println("<td bgcolor=#00FFFF>" + node.getLabel() + "</td>");
+                    writer.println("<td bgcolor=#00FFFF>" + getNodeDisplayName(node) + "</td>");
                     if (node.getCX()) {
                         writer.println("<td align=right bgcolor=#CCFFCC>" + format(node.getRFx()) + "</td>");
                     } else {
@@ -84,9 +160,9 @@ public class HtmlView {
             }
 
             for (Node node : nodeIterable) {
-                if (!node.getLabel().equals("")) {
+                if (shouldIncludeNode(node)) {
                     writer.println("<tr>");
-                    writer.println("<td bgcolor=#00FFFF>" + node.getLabel() + "</td>");
+                    writer.println("<td bgcolor=#00FFFF>" + getNodeDisplayName(node) + "</td>");
                     writer.println("<td align=right bgcolor=#CCFFCC>" + format(node.getDX()) + "</td>");
                     writer.println("<td align=right bgcolor=#CCFFCC>" + format(node.getDZ()) + "</td>");
                     writer.println("<td align=right bgcolor=#CCFFCC>" + format(node.getDR()) + "</td>");
@@ -99,7 +175,7 @@ public class HtmlView {
             for (Beam element : model.getBeamIterator()) {
                 if (element instanceof EBBeam) {
                     EBBeam beam = (EBBeam) element;
-                    if (!beam.getLabel().equals("")) {
+                    if (shouldIncludeBeam(beam)) {
                         writer.println();
                         writer.println("<br><br><h2>"
                                 + locale.getString("ResStressResultants") + "</h2>");
@@ -119,8 +195,8 @@ public class HtmlView {
             for (Beam element : model.getBeamIterator()) {
                 if (element instanceof EBBeam) {
                     EBBeam beam = (EBBeam) element;
-                    if (!beam.getLabel().equals("")) {
-                        writer.println("<tr><td bgcolor=#00FFFF>" + beam.getLabel() + "</td>");
+                    if (shouldIncludeBeam(beam)) {
+                        writer.println("<tr><td bgcolor=#00FFFF>" + getBeamDisplayName(beam) + "</td>");
                         writer.println("<td align=right bgcolor=#CCFFCC>" + format(beam.N(0.)) + "</td>");
                         writer.println("<td align=right bgcolor=#CCFFCC>" + format(beam.V(0.)) + "</td>");
                         writer.println("<td align=right bgcolor=#CCFFCC>" + format(beam.M(0.)) + "</td>");
@@ -136,7 +212,7 @@ public class HtmlView {
             for (Beam element : model.getBeamIterator()) {
                 if (element instanceof Truss) {
                     Truss truss = (Truss) element;
-                    if (!truss.getLabel().equals("")) {
+                    if (shouldIncludeBeam(truss)) {
                         writer.println("<table cellpadding=5>");
                         writer.println("<tr><th bgcolor=#FFCCCC>Truss</th><th bgcolor=#CCCCFF>N</th></tr>");
                         break trussLoop;
@@ -147,8 +223,8 @@ public class HtmlView {
             for (Beam element : model.getBeamIterator()) {
                 if (element instanceof Truss) {
                     Truss truss = (Truss) element;
-                    if (!truss.getLabel().equals("")) {
-                        writer.println("<tr><td bgcolor=#00FFFF>" + truss.getLabel() + "</td>");
+                    if (shouldIncludeBeam(truss)) {
+                        writer.println("<tr><td bgcolor=#00FFFF>" + getBeamDisplayName(truss) + "</td>");
                         writer.println("<td align=right bgcolor=#CCFFCC>" + format(truss.N(0.)) + "</td></tr>");
                     }
                 }

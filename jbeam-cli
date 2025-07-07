@@ -1,0 +1,3 @@
+#!/bin/bash
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+java -cp ${SCRIPT_DIR}/target/jbeam-4.1.0-jar-with-dependencies.jar com.schwebke.jbeam.JBeamCLI $*

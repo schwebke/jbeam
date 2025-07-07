@@ -51,6 +51,7 @@ public class JBeamCLI {
         String analysisType = "static"; // default to static analysis
         boolean showVersion = false;
         boolean showHelp = false;
+        boolean showAllItems = false; // default to labeled items only
         
         // Parse command line arguments
         for (int i = 0; i < args.length; i++) {
@@ -103,6 +104,10 @@ public class JBeamCLI {
                         throw new IllegalArgumentException("Missing analysis type after " + arg);
                     }
                     break;
+                case "-s":
+                case "--show-all":
+                    showAllItems = true;
+                    break;
                 default:
                     // If no flag specified, assume it's the input file
                     if (inputFile == null && !arg.startsWith("-")) {
@@ -139,10 +144,10 @@ public class JBeamCLI {
         // Export results
         if (outputFile != null) {
             System.out.println("Exporting results to: " + outputFile + " (format: " + outputFormat + ")");
-            exportResults(model, outputFile, outputFormat);
+            exportResults(model, outputFile, outputFormat, showAllItems);
         } else {
             System.out.println("Exporting results to console (format: " + outputFormat + ")");
-            exportResults(model, null, outputFormat);
+            exportResults(model, null, outputFormat, showAllItems);
         }
         
         System.out.println("Analysis completed successfully.");
@@ -194,7 +199,7 @@ public class JBeamCLI {
         }
     }
     
-    private void exportResults(SelectableModel model, String outputFile, String format) throws Exception {
+    private void exportResults(SelectableModel model, String outputFile, String format, boolean showAllItems) throws Exception {
         PrintWriter writer;
         
         if (outputFile != null) {
@@ -209,11 +214,11 @@ public class JBeamCLI {
             
             switch (format) {
                 case "text":
-                    TextView textView = new TextView(model, controller);
+                    TextView textView = new TextView(model, controller, showAllItems);
                     textView.write(writer);
                     break;
                 case "html":
-                    HtmlView htmlView = new HtmlView(model, controller);
+                    HtmlView htmlView = new HtmlView(model, controller, showAllItems);
                     htmlView.write(writer);
                     break;
                 default:
@@ -237,6 +242,7 @@ public class JBeamCLI {
         System.out.println("  -o, --output FILE      Output results file (default: console)");
         System.out.println("  -f, --format FORMAT    Output format: text|html (default: text)");
         System.out.println("  -a, --analysis TYPE    Analysis type: static|modal (default: static)");
+        System.out.println("  -s, --show-all         Show all items including unlabeled ones with JSON IDs");
         System.out.println("  -v, --version          Show version information");
         System.out.println("  -h, --help             Show this help message");
         System.out.println();
@@ -244,6 +250,7 @@ public class JBeamCLI {
         System.out.println("  java -jar jbeam-cli.jar model.json");
         System.out.println("  java -jar jbeam-cli.jar -i model.json -o results.txt -f text -a static");
         System.out.println("  java -jar jbeam-cli.jar -i model.json -o results.html -f html -a modal");
+        System.out.println("  java -jar jbeam-cli.jar --show-all model.json  # Include unlabeled items");
     }
     
     /**
