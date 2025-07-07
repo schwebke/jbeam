@@ -12,15 +12,21 @@ public class HtmlView {
     Model model;
     IController controller;
     boolean showAllItems;
+    boolean dumpMatrices;
 
     public HtmlView(Model model, IController controller) {
-        this(model, controller, false);
+        this(model, controller, false, false);
     }
     
     public HtmlView(Model model, IController controller, boolean showAllItems) {
+        this(model, controller, showAllItems, false);
+    }
+    
+    public HtmlView(Model model, IController controller, boolean showAllItems, boolean dumpMatrices) {
         this.model = model;
         this.controller = controller;
         this.showAllItems = showAllItems;
+        this.dumpMatrices = dumpMatrices;
     }
 
     String format(double number) {
@@ -231,6 +237,10 @@ public class HtmlView {
             }
             writer.println("</table>");
 
+            if (dumpMatrices) {
+                writeMatrixOutput(writer);
+            }
+
             writer.println("</body>");
             writer.println("</html>");
 
@@ -239,5 +249,63 @@ public class HtmlView {
         }
 
 
+    }
+
+    private void writeMatrixOutput(PrintWriter writer) {
+        writer.println("<br><br><h2>Matrix Dump</h2>");
+
+        for (Beam beam : model.getBeamIterator()) {
+            writer.println("<br><h3>Beam: " + getBeamDisplayName(beam) + "</h3>");
+
+            if (beam instanceof EBBeam) {
+                EBBeam ebBeam = (EBBeam) beam;
+                writer.println("<b>Type:</b> EBBeam<br>");
+                writer.println("<b>Length:</b> " + format(ebBeam.getL()) + "<br>");
+                writer.println("<b>EA:</b> " + format(ebBeam.getEA()) + "<br>");
+                writer.println("<b>EI:</b> " + format(ebBeam.getEI()) + "<br>");
+            } else if (beam instanceof Truss) {
+                Truss truss = (Truss) beam;
+                writer.println("<b>Type:</b> Truss<br>");
+                writer.println("<b>Length:</b> " + format(truss.getL()) + "<br>");
+                writer.println("<b>EA:</b> " + format(truss.getEA()) + "<br>");
+            }
+
+            printMatrix(writer, "Local Stiffness Matrix (Sl)", beam.getSl());
+            printMatrix(writer, "Global Stiffness Matrix (Sg)", beam.getSg());
+            printMatrix(writer, "Transformation Matrix (a)", beam.getTransformationMatrix());
+            printMatrix(writer, "Local Mass Matrix (Ml)", beam.getMl());
+            printMatrix(writer, "Global Mass Matrix (Mg)", beam.getMg());
+            printVector(writer, "Global Load Vector (Lg)", beam.getLg());
+        }
+    }
+
+    private void printMatrix(PrintWriter writer, String title, double[][] matrix) {
+        writer.println("<br><b>" + title + ":</b>");
+        if (matrix == null) {
+            writer.println(" null");
+            return;
+        }
+        writer.println("<table border=1 cellpadding=5>");
+        for (int i = 0; i < matrix.length; i++) {
+            writer.print("<tr>");
+            for (int j = 0; j < matrix[i].length; j++) {
+                writer.print("<td>" + format(matrix[i][j]) + "</td>");
+            }
+            writer.println("</tr>");
+        }
+        writer.println("</table>");
+    }
+
+    private void printVector(PrintWriter writer, String title, double[] vector) {
+        writer.println("<br><b>" + title + ":</b>");
+        if (vector == null) {
+            writer.println(" null");
+            return;
+        }
+        writer.println("<table border=1 cellpadding=5><tr>");
+        for (int i = 0; i < vector.length; i++) {
+            writer.print("<td>" + format(vector[i]) + "</td>");
+        }
+        writer.println("</tr></table>");
     }
 }

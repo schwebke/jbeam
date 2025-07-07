@@ -118,6 +118,22 @@ public abstract class Beam implements Distance, Serializable
        return Mg;
     }
 
+    public double[] getLg() {
+        return Lg;
+    }
+
+    public double[][] getSl() {
+        return Sl;
+    }
+
+    public double[][] getMl() {
+        return Ml;
+    }
+
+    public double[][] getTransformationMatrix() {
+        return a;
+    }
+
     public Node getN1()
     {
 	return n1;
