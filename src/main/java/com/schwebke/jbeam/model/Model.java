@@ -7,37 +7,37 @@ import java.util.*;
 import java.io.*;
 
 /**
- * Model. Speichert Geometrie, Topologie und Materialeigenschaften,
- * führt die Berechnung durch.
- * Dieses Model ist als "Rechenkern" auch ohne graphisches
- * Frontend lauffähig.
+ * Model. Stores geometry, topology and material properties,
+ * performs the calculation.
+ * This model can run as a "calculation core" even without a graphical
+ * frontend.
  */
 public class Model implements Serializable, IModel {
 
     static final long serialVersionUID = -5300914168613980355L;
-    /// Liste der Knoten.
+    /// List of nodes.
     protected ArrayList<Node> nodeList;
-    /// Liste der Beamelemente.
+    /// List of beam elements.
     protected ArrayList<Beam> beamList;
-    /// True, wenn dieses Model gültige (aktuelle) Rechenergebnisse enthält.
+    /// True if this model contains valid (current) calculation results.
     protected boolean validCalculation;
-    /** globale Steifigkeitsmatrix */
+    /** global stiffness matrix */
     protected double K[][];
-    /** globale Massenmatrix */
+    /** global mass matrix */
     protected double M[][];
-    /** globaler Lastvektor */
+    /** global load vector */
     protected double p[];
-    /** Eigenvektoren */
+    /** eigenvectors */
     protected double EigenVec[][];
-    /** Eigenfrequenzen */
+    /** eigenfrequencies */
     protected double f[];
-    /** aktive Eigenform */
+    /** active eigenmode */
     protected int mode;
-    /// Anzahl der globalen DOFs
+    /// Number of global DOFs
     protected int r;
 
     /**
-     * Erzeugt neues, leeres Model.
+     * Creates a new, empty model.
      */
     public Model() {
         nodeList = new ArrayList<Node>();
@@ -128,29 +128,29 @@ public class Model implements Serializable, IModel {
     }
 
     /**
-     * Statische Berechnung des Systems.
+     * Static analysis of the system.
      */
     public void calculate() {
-        // Systemmatrizen aufstellen
+        // Set up system matrices
         calculateGlobalMatrices();
 
-        // Auflösen des LGS
+        // Solve the linear equation system
         Solver.cholesky(K, p);
 
-        // Rückrechnung
+        // Back-calculation
         postCalculate(p);
 
         validCalculation = true;
     }
 
     /**
-     * Modale Analyse des Systems.
+     * Modal analysis of the system.
      */
     public void calculateModal() {
-        // Systemmatrizen aufstellen
+        // Set up system matrices
         calculateGlobalMatrices();
 
-        // Reduktion auf Standardeigenwertproblem
+        // Reduction to standard eigenvalue problem
         double tmp[] = new double[r];
         double dK[][] = Matrix.duplicate(K);
         for (int i = 0; i < r; ++i) {
@@ -177,10 +177,10 @@ public class Model implements Serializable, IModel {
 
         double A[][] = Matrix.multiply(invLK, Matrix.multiply(M, invLKT));
 
-        // Eigenwerte und Eigenvektoren bestimmen
+        // Determine eigenvalues and eigenvectors
         double V[][] = Eigen.cyclJac(A);
 
-        // Eigenwerte sortieren
+        // Sort eigenvalues
         double eigenVal[] = new double[r];
         int eigenValIdx[] = new int[r];
         for (int i = 0; i < r; ++i) {
@@ -207,7 +207,7 @@ public class Model implements Serializable, IModel {
             eigenVal[maxJ] = tv;
         }
 
-        // Rücktransformation
+        // Back-transformation
         EigenVec = new double[r][r];
         f = new double[r];
         for (int i = 0; i < r; ++i) {
@@ -274,11 +274,11 @@ public class Model implements Serializable, IModel {
     }
 
     /**
-     * Berechnen der globalen Steifigkeits- und Massenmatrizen sowie
-     * des globalen Lastvektors.
+     * Calculate the global stiffness and mass matrices as well as
+     * the global load vector.
      */
     protected void calculateGlobalMatrices() {
-        // Ermitteln und Durchnumerieren der globalen Freiheitsgrade
+        // Determine and number the global degrees of freedom
         r = 0;
         for (Node node : nodeList) {
             if (!node.cX) {
@@ -314,7 +314,7 @@ public class Model implements Serializable, IModel {
             p[n] = 0.;
         }
 
-        // Erzeugen der Locationmatrix und der Systemsteifigkeitsmatrix K
+        // Generate the location matrix and the system stiffness matrix K
         for (Beam beam : beamList) {
             int locationVector[] = new int[6];
             locationVector[0] = beam.n1.nX;

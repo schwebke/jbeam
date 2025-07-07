@@ -6,13 +6,13 @@ import com.schwebke.jbeam.*;
 import java.io.*;
 import java.util.*;
 
-/** Alternativer View zur HTML-Ergenisausgabe */
+/** Alternative view for HTML result output */
 public class HtmlView {
 
     Model model;
-    JBeam controller;
+    IController controller;
 
-    public HtmlView(Model model, JBeam controller) {
+    public HtmlView(Model model, IController controller) {
         this.model = model;
         this.controller = controller;
     }

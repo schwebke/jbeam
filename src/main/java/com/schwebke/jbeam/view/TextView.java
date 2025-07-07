@@ -6,13 +6,13 @@ import com.schwebke.jbeam.*;
 import java.io.*;
 import java.util.*;
 
-/** Alternativer View zur ASCII-Text-Ergebnisausgabe */
+/** Alternative view for ASCII text result output */
 public class TextView {
 
     Model model;
-    JBeam controller;
+    IController controller;
 
-    public TextView(Model model, JBeam controller) {
+    public TextView(Model model, IController controller) {
         this.model = model;
         this.controller = controller;
     }

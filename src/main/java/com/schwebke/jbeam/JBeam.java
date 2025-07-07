@@ -1,5 +1,5 @@
 /*
-    JBeam - ein Stabwerksprogramm für die Java-Plattform
+    JBeam - a structural analysis program for the Java platform
 
     Copyright (C) 1998 Kai Gerd Schwebke
 
@@ -20,14 +20,14 @@
 */
 
 package com.schwebke.jbeam;
-// projekteigene Packages
+// project-specific packages
 import com.schwebke.jbeam.view.*;
 import com.schwebke.jbeam.model.*;
 import com.schwebke.jbeam.tool.*;
 import com.schwebke.jbeam.plugin.*;
 import com.schwebke.jbeam.persistence.*;
 
-// fremde Packages
+// external packages
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Desktop;
@@ -64,24 +64,24 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- * Hauptfensterklasse der Anwendung (Controller)
+ * Main window class of the application (Controller)
  *
  * @author Kai Gerd Schwebke
  *
  * @version 2.1.0
  */
-public class JBeam implements IHost
+public class JBeam implements IHost, IController
 {
     /**
-      * Instanz des Views. (graphisches Editierfenster)
+      * Instance of the View. (graphical editing window)
       */
     View view;
     /**
-      * Instanz des Models.
+      * Instance of the Model.
       */
     SelectableModel model;
     /**
-     * Formatierer für Gleitkommazahlen (auf standardmäßig 3 Nachkommastellen)
+     * Formatter for floating point numbers (default 3 decimal places)
      */
     NumberFormat numberFormat;
 
@@ -98,7 +98,7 @@ public class JBeam implements IHost
     public final static String version="4.1.0";
     public final static String verdate="2025-07-06";
 
-    // letztes Verzeichnis bei FileChoose
+    // last directory for FileChoose
     File fileChooseDir;
 
     /** Snap grid */
@@ -107,20 +107,20 @@ public class JBeam implements IHost
     /** Checkradius */
     int checkR;
 
-    /** Standard-Querschnittswerte für neuangelegte Objekte */
+    /** Default cross-section values for newly created objects */
     double EA;
     double EI;
     double GAs;
     double m;
 
 
-    /** true, wenn das Programm für Benutzereingaben gesperrt ist (bei Remote Controlling)*/
+    /** true if the program is locked for user input (during remote controlling)*/
     private boolean lock;
 
 
     /**
-     * Öffnet ein Applikations-Hauptfenster. Beim Beenden wird die <code>exit</code>-Methode
-     * des übergebenen Launchers aufgerufen.
+     * Opens an application main window. On exit, the <code>exit</code> method
+     * of the passed launcher is called.
      */
     public JBeam(Launcher launcher)
     {
