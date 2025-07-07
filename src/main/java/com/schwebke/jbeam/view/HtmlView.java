@@ -12,15 +12,21 @@ public class HtmlView {
     Model model;
     IController controller;
     boolean showAllItems;
+    boolean dumpMatrices;
 
     public HtmlView(Model model, IController controller) {
         this(model, controller, false);
     }
     
     public HtmlView(Model model, IController controller, boolean showAllItems) {
+        this(model, controller, showAllItems, false);
+    }
+    
+    public HtmlView(Model model, IController controller, boolean showAllItems, boolean dumpMatrices) {
         this.model = model;
         this.controller = controller;
         this.showAllItems = showAllItems;
+        this.dumpMatrices = dumpMatrices;
     }
 
     String format(double number) {
@@ -237,7 +243,119 @@ public class HtmlView {
         } catch (Exception e) {
             System.out.println("HtmlView error: " + e.getMessage());
         }
-
-
+        
+        // Dump matrices if requested
+        if (dumpMatrices) {
+            dumpElementMatrices(writer);
+        }
+    }
+    
+    /**
+     * Dump element matrices for debugging.
+     */
+    private void dumpElementMatrices(PrintWriter writer) {
+        writer.println("<h2>Element Matrices Dump</h2>");
+        
+        int beamCounter = 1;
+        for (Beam beam : model.getBeamIterator()) {
+            writer.println("<h3>Beam " + beamCounter + " (" + getBeamId(beam) + ")</h3>");
+            dumpBeamMatricesHtml(beam, writer);
+            beamCounter++;
+        }
+        
+        writer.println("</body>");
+        writer.println("</html>");
+    }
+    
+    /**
+     * Dump matrices for a single beam element in HTML format.
+     */
+    private void dumpBeamMatricesHtml(Beam beam, PrintWriter writer) {
+        writer.println("<table border='1' style='border-collapse: collapse; margin: 10px 0;'>");
+        
+        // Basic beam properties
+        writer.println("<tr><td><strong>Type:</strong></td><td>" + beam.getClass().getSimpleName() + "</td></tr>");
+        writer.println("<tr><td><strong>Length:</strong></td><td>" + format(beam.getL()) + "</td></tr>");
+        writer.println("<tr><td><strong>Nodes:</strong></td><td>" + getNodeDisplayName(beam.getN1()) + " → " + getNodeDisplayName(beam.getN2()) + "</td></tr>");
+        
+        // Beam-specific properties
+        if (beam instanceof EBBeam) {
+            EBBeam ebBeam = (EBBeam) beam;
+            writer.println("<tr><td><strong>EI:</strong></td><td>" + format(ebBeam.getEI()) + "</td></tr>");
+            writer.println("<tr><td><strong>EA:</strong></td><td>" + format(ebBeam.getEA()) + "</td></tr>");
+        } else if (beam instanceof Truss) {
+            Truss truss = (Truss) beam;
+            writer.println("<tr><td><strong>EA:</strong></td><td>" + format(truss.getEA()) + "</td></tr>");
+        }
+        
+        // Location vector (DOF mapping)
+        Node n1 = beam.getN1();
+        Node n2 = beam.getN2();
+        writer.println("<tr><td><strong>Location Vector:</strong></td><td>[DOF mapping not available - protected access]</td></tr>");
+        
+        writer.println("</table>");
+        
+        // Matrices
+        writer.println("<h4>Local Stiffness Matrix (Sl)</h4>");
+        formatMatrixAsHtml(beam.getSl(), writer);
+        
+        writer.println("<h4>Global Stiffness Matrix (Sg)</h4>");
+        formatMatrixAsHtml(beam.getSg(), writer);
+        
+        writer.println("<h4>Transformation Matrix (a)</h4>");
+        formatMatrixAsHtml(beam.getTransformationMatrix(), writer);
+        
+        writer.println("<h4>Local Mass Matrix (Ml)</h4>");
+        formatMatrixAsHtml(beam.getMl(), writer);
+        
+        writer.println("<h4>Global Mass Matrix (Mg)</h4>");
+        formatMatrixAsHtml(beam.getMg(), writer);
+        
+        writer.println("<h4>Global Load Vector (Lg)</h4>");
+        formatVectorAsHtml(beam.getLg(), writer);
+        
+        // Note: Inner hinge information not available due to protected access
+        if (beam instanceof EBBeam) {
+            writer.println("<h4>Inner Hinges</h4>");
+            writer.println("<p>[information not available - protected access]</p>");
+        }
+    }
+    
+    /**
+     * Format a matrix for HTML output.
+     */
+    private void formatMatrixAsHtml(double[][] matrix, PrintWriter writer) {
+        if (matrix == null) {
+            writer.println("<p>[null]</p>");
+            return;
+        }
+        
+        writer.println("<table border='1' style='border-collapse: collapse; font-family: monospace;'>");
+        for (int i = 0; i < matrix.length; i++) {
+            writer.println("<tr>");
+            for (int j = 0; j < matrix[i].length; j++) {
+                writer.println("<td style='text-align: right; padding: 2px 8px;'>" + 
+                    String.format("%.6f", matrix[i][j]) + "</td>");
+            }
+            writer.println("</tr>");
+        }
+        writer.println("</table>");
+    }
+    
+    /**
+     * Format a vector for HTML output.
+     */
+    private void formatVectorAsHtml(double[] vector, PrintWriter writer) {
+        if (vector == null) {
+            writer.println("<p>[null]</p>");
+            return;
+        }
+        
+        writer.println("<table border='1' style='border-collapse: collapse; font-family: monospace;'>");
+        for (int i = 0; i < vector.length; i++) {
+            writer.println("<tr><td style='text-align: right; padding: 2px 8px;'>" + 
+                String.format("%.6f", vector[i]) + "</td></tr>");
+        }
+        writer.println("</table>");
     }
 }

@@ -12,15 +12,21 @@ public class TextView {
     Model model;
     IController controller;
     boolean showAllItems;
+    boolean dumpMatrices;
 
     public TextView(Model model, IController controller) {
         this(model, controller, false);
     }
     
     public TextView(Model model, IController controller, boolean showAllItems) {
+        this(model, controller, showAllItems, false);
+    }
+    
+    public TextView(Model model, IController controller, boolean showAllItems, boolean dumpMatrices) {
         this.model = model;
         this.controller = controller;
         this.showAllItems = showAllItems;
+        this.dumpMatrices = dumpMatrices;
     }
 
     String format(double number) {
@@ -171,7 +177,122 @@ public class TextView {
         } catch (Exception e) {
             System.out.println("TextView error: " + e.getMessage());
         }
-
-
+        
+        // Dump matrices if requested
+        if (dumpMatrices) {
+            dumpElementMatrices(writer);
+        }
+    }
+    
+    /**
+     * Dump element matrices for debugging.
+     */
+    private void dumpElementMatrices(PrintWriter writer) {
+        writer.println();
+        writer.println("===============================================");
+        writer.println("ELEMENT MATRICES DUMP");
+        writer.println("===============================================");
+        
+        int beamCounter = 1;
+        for (Beam beam : model.getBeamIterator()) {
+            writer.println();
+            writer.println("--- BEAM " + beamCounter + " (" + getBeamId(beam) + ") ---");
+            dumpBeamMatrices(beam, writer);
+            beamCounter++;
+        }
+    }
+    
+    /**
+     * Dump matrices for a single beam element.
+     */
+    private void dumpBeamMatrices(Beam beam, PrintWriter writer) {
+        // Basic beam properties
+        writer.println("Type: " + beam.getClass().getSimpleName());
+        writer.println("Length: " + format(beam.getL()));
+        writer.println("Nodes: " + getNodeDisplayName(beam.getN1()) + " -> " + getNodeDisplayName(beam.getN2()));
+        
+        // Beam-specific properties
+        if (beam instanceof EBBeam) {
+            EBBeam ebBeam = (EBBeam) beam;
+            writer.println("EI: " + format(ebBeam.getEI()));
+            writer.println("EA: " + format(ebBeam.getEA()));
+        } else if (beam instanceof Truss) {
+            Truss truss = (Truss) beam;
+            writer.println("EA: " + format(truss.getEA()));
+        }
+        
+        // Location vector (DOF mapping)
+        writer.println();
+        writer.println("Location Vector:");
+        Node n1 = beam.getN1();
+        Node n2 = beam.getN2();
+        writer.println("  [DOF mapping not available - protected access]");
+        
+        // Matrices
+        writer.println();
+        writer.println("Local Stiffness Matrix (Sl):");
+        formatMatrix(beam.getSl(), writer);
+        
+        writer.println();
+        writer.println("Global Stiffness Matrix (Sg):");
+        formatMatrix(beam.getSg(), writer);
+        
+        writer.println();
+        writer.println("Transformation Matrix (a):");
+        formatMatrix(beam.getTransformationMatrix(), writer);
+        
+        writer.println();
+        writer.println("Local Mass Matrix (Ml):");
+        formatMatrix(beam.getMl(), writer);
+        
+        writer.println();
+        writer.println("Global Mass Matrix (Mg):");
+        formatMatrix(beam.getMg(), writer);
+        
+        writer.println();
+        writer.println("Global Load Vector (Lg):");
+        formatVector(beam.getLg(), writer);
+        
+        // Note: Inner hinge information not available due to protected access
+        if (beam instanceof EBBeam) {
+            writer.println();
+            writer.println("Inner Hinges: [information not available - protected access]");
+        }
+    }
+    
+    /**
+     * Format a matrix for text output.
+     */
+    private void formatMatrix(double[][] matrix, PrintWriter writer) {
+        if (matrix == null) {
+            writer.println("  [null]");
+            return;
+        }
+        
+        for (int i = 0; i < matrix.length; i++) {
+            writer.print("  [");
+            for (int j = 0; j < matrix[i].length; j++) {
+                if (j > 0) writer.print(", ");
+                writer.print(String.format("%12.6f", matrix[i][j]));
+            }
+            writer.println("]");
+        }
+    }
+    
+    /**
+     * Format a vector for text output.
+     */
+    private void formatVector(double[] vector, PrintWriter writer) {
+        if (vector == null) {
+            writer.println("  [null]");
+            return;
+        }
+        
+        writer.print("  [");
+        for (int i = 0; i < vector.length; i++) {
+            if (i > 0) writer.print(", ");
+            writer.print(String.format("%12.6f", vector[i]));
+        }
+        writer.println("]");
     }
 }

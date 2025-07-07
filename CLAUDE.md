@@ -131,6 +131,7 @@ java -cp target/jbeam-4.1.0-jar-with-dependencies.jar com.schwebke.jbeam.JBeamCL
 - `-f, --format FORMAT` - Output format: text|html (default: text)
 - `-a, --analysis TYPE` - Analysis type: static|modal (default: static)
 - `-s, --show-all` - Show all items including unlabeled ones with JSON IDs
+- `-d, --dump-matrices` - Dump element matrices for debugging
 - `-v, --version` - Show version information
 - `-h, --help` - Show help message
 
@@ -139,6 +140,7 @@ java -cp target/jbeam-4.1.0-jar-with-dependencies.jar com.schwebke.jbeam.JBeamCL
 - **JSON Model Support**: Load and analyze JSON models
 - **Multiple Output Formats**: Text and HTML result export
 - **Complete Element Coverage**: `--show-all` option displays all elements using JSON-style IDs (`node-1`, `beam-1`, etc.)
+- **Matrix Debugging**: `--dump-matrices` option outputs detailed element matrices for finite element debugging
 - **Static and Modal Analysis**: Both analysis types supported
 - **Error Handling**: Comprehensive validation with user-friendly error messages
 
@@ -155,6 +157,10 @@ java -cp target/jbeam-4.1.0-jar-with-dependencies.jar com.schwebke.jbeam.JBeamCL
 
 # Static analysis with text output to file
 ./jbeam-cli -i model.json -o results.txt -f text -a static --show-all
+
+# Matrix dumping for debugging structural analysis
+./jbeam-cli --dump-matrices model.json
+./jbeam-cli -d -o debug_matrices.txt model.json
 
 # Help and version info
 ./jbeam-cli --help
